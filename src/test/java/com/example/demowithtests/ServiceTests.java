@@ -19,6 +19,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -100,9 +101,9 @@ public class ServiceTests {
     @Test
     @DisplayName("Delete employee test")
     public void deleteEmployeeTest() {
-
         when(employeeRepository.findById(employee.getId())).thenReturn(Optional.of(employee));
         service.removeById(employee.getId());
-        verify(employeeRepository).delete(employee);
+        verify(employeeRepository).findById(employee.getId());
+        assertTrue(employee.is_deleted());
     }
 }

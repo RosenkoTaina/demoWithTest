@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
 public class EmployeeServiceBean implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
+    private final EmployeeServiceEMBean employeeServiceEMBean;
     private final EmailSenderService emailSenderService;
 
     @Override
@@ -47,7 +48,7 @@ public class EmployeeServiceBean implements EmployeeService {
 
     @Override
     public List<Employee> getAll() {
-        return employeeRepository.findAll();
+        return employeeServiceEMBean.getAllEM();
     }
 
     @Override
@@ -87,10 +88,11 @@ public class EmployeeServiceBean implements EmployeeService {
         var employee = employeeRepository.findById(id)
                 // .orElseThrow(() -> new EntityNotFoundException("Employee not found with id = " + id));
                 .orElseThrow(ResourceWasDeletedException::new);
-        //employee.setIsDeleted(true);
-        employeeRepository.delete(employee);
-        //repository.save(employee);
+        employee.set_deleted(true);
+        // employeeRepository.delete(employee);
+        employeeRepository.save(employee);
     }
+
 
    /* @Override
     public void removeById(Integer id) {

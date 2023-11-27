@@ -3,7 +3,11 @@ package com.example.demowithtests.domain;
 import com.example.demowithtests.util.annotations.entity.Name;
 import com.example.demowithtests.util.annotations.entity.ToLowerCase;
 import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.OrderBy;
+import jakarta.persistence.Table;
 import lombok.*;
+import org.hibernate.annotations.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -15,6 +19,11 @@ import java.util.Set;
 @Setter
 @Getter
 @Builder
+@SQLDelete(sql = "UPDATE users SET is_deleted = true WHERE id=?")
+@Where(clause = "is_deleted=false")
+//@FilterDef(name = "deletedProductFilter", parameters = @ParamDef(name = "is_deleted", type = "boolean"))
+//@Filter(name = "deletedProductFilter", condition = "is_deleted = :is_deleted")
+
 public final class Employee {
 
     @Id
@@ -40,4 +49,7 @@ public final class Employee {
     @OneToOne  (cascade = CascadeType.ALL)
     @JoinColumn(name = "document_id", referencedColumnName = "id")
     private Document document;
+
+    private boolean is_deleted = Boolean.FALSE;
+
 }

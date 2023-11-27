@@ -67,6 +67,8 @@ public class EmployeeServiceEMBean implements EmployeeServiceEM {
     @Override
     @Transactional
     public List<Employee> getAllEM() {
-        return entityManager.createNativeQuery("SELECT * FROM users", Employee.class).getResultList();
+        return entityManager.createNativeQuery("SELECT * FROM users WHERE is_deleted = false", Employee.class).getResultList();
     }
+
+
 }
