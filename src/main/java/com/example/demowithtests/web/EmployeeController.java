@@ -1,6 +1,7 @@
 package com.example.demowithtests.web;
 
 import com.example.demowithtests.domain.Employee;
+import com.example.demowithtests.dto.DeleteDTO;
 import com.example.demowithtests.dto.EmployeeDto;
 import com.example.demowithtests.dto.EmployeeReadDto;
 import com.example.demowithtests.service.EmployeeService;
@@ -19,9 +20,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.example.demowithtests.util.Endpoints.API_BASE;
 import static com.example.demowithtests.util.Endpoints.USER_ENDPOINT;
@@ -64,8 +64,10 @@ public class EmployeeController {
 
     @GetMapping("/users")
     @ResponseStatus(HttpStatus.OK)
-    public List<Employee> getAllUsers() {
-        return employeeService.getAll();
+    public List<EmployeeDto> getAllUsers() {
+        List<Employee> employees = employeeService.getAll();
+        List<EmployeeDto> employeeDtos = employeeMapper.toListEmployeeDto(employees);
+        return employeeDtos;
     }
 
     @GetMapping("/users/pages")
@@ -109,8 +111,10 @@ public class EmployeeController {
 
     @DeleteMapping("/users/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void removeEmployeeById(@PathVariable Integer id) {
+    public DeleteDTO removeEmployeeById(@PathVariable Integer id) {
+        log.debug("deleteEmployee() EmployeeController - start: id = {}", id);
         employeeService.removeById(id);
+        return new DeleteDTO(id, Calendar.getInstance().getTime());
     }
 
     @DeleteMapping("/users")
@@ -190,7 +194,8 @@ public class EmployeeController {
 
     @PostMapping("/employees")
     @ResponseStatus(HttpStatus.CREATED)
-    public String createAndSave(@RequestBody Employee employee) {
+    public String createAndSave(@RequestBody EmployeeDto requestForSave) {
+        Employee employee = employeeMapper.toEmployee(requestForSave);
         employeeService.createAndSave(employee);
         return "employee with name: " + employee.getName() + " saved!";
     }
@@ -202,4 +207,5 @@ public class EmployeeController {
         var content = employeeService.checkDuplicateEmails(email, paging);
         return content;
     }
+
 }

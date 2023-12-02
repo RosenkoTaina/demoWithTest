@@ -56,6 +56,7 @@ public class EmployeeServiceEMBean implements EmployeeServiceEM {
 
     /**
      * @param id
+     * @return
      */
     @Override
     @Transactional //jakarta
