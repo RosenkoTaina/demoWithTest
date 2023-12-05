@@ -1,5 +1,6 @@
 package com.example.demowithtests.repository;
 
+import com.example.demowithtests.domain.Address;
 import com.example.demowithtests.domain.Employee;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Page;
@@ -41,9 +42,15 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
             "where users.gender = :gender and addresses.country = :country", nativeQuery = true)*/
     List<Employee> findByGender(String gender, String country);
 
+
+    @Query("SELECT a FROM Address a WHERE a.id = :id")
+    Optional<Address> findAddressById(@Param("id") Long id);
+
     @Query(value = "SELECT * FROM users WHERE SUBSTRING(country, 1, 1) = LOWER(SUBSTRING(country, 1, 1))",
             nativeQuery = true)
     List<Employee> findAllByCountryStartsWithLowerCase();
+
+
 
     @Query(value = "SELECT * FROM users WHERE country NOT IN :countries", nativeQuery = true)
     List<Employee> findAllByCountryNotIn(@Param("countries") List<String> countries);
@@ -85,10 +92,28 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     @EntityGraph(type = EntityGraph.EntityGraphType.FETCH, value = "user_entity-graph")
     <S extends Employee> S save(S entity);
 
+
+    @Transactional
+    @Modifying(flushAutomatically = true, clearAutomatically = true)
+    @Query(value = "INSERT INTO addresses (address_has_active, employee_id, city, country, street) " +
+            "VALUES (:address_has_active, :employee_id, :city, :country, :street)", nativeQuery = true)
+    void saveAddress(Boolean address_has_active, Integer employee_id, String city, String country, String street);
+
+    @Transactional
+    @Modifying(flushAutomatically = true, clearAutomatically = true)
+    @Query(value = "UPDATE addresses SET address_has_active = :address_has_active, city = :city, country = :country, street =:street WHERE id = :id", nativeQuery = true)
+    Integer updateAddress(Long id, Boolean address_has_active, String city, String country, String street);
+
     @Override
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Transactional
     @EntityGraph(type = EntityGraph.EntityGraphType.FETCH, value = "user_entity-graph")
     <S extends Employee> List<S> saveAll(Iterable<S> entities);
+
+    @Transactional
+    @Modifying(flushAutomatically = true, clearAutomatically = true)
+    @Query(value = "UPDATE addresses SET address_has_active = FALSE WHERE id = :id", nativeQuery = true)
+    Integer setAddressNotActive(Long id);
+
 
 }

@@ -35,16 +35,32 @@ public class LoaderServiceBean implements LoaderService {
     }
 
     public List<Employee> createListEmployees() {
+
         List<Employee> employees = new ArrayList<>();
-        long seed = System.currentTimeMillis();
-        Faker faker = new Faker(new Locale("uk"), new Random(seed));
+        long seed = 1;
 
+        Faker faker = new Faker(new Locale("en"), new Random(seed));
         for (int i = 0; i < 2_000; i++) {
-            String name = faker.name().fullName();
-            String country = faker.address().country();
-            String email = faker.internet().emailAddress();
 
-            Set<Address> addresses = Set.copyOf(Arrays.asList(new Address(), new Address()));
+            String name = faker.name().name();
+            //String country = faker.country().name();
+            String country = i % 30 == 0 ? "Ukraine" : faker.country().name();
+            String email = faker.name().name();
+
+            Set<Address> addresses = Set.copyOf(
+                    Arrays.asList(
+                            Address.builder()
+                                    .country(faker.address().country())
+                                    .city(faker.address().city())
+                                    .street(faker.address().streetAddress())
+                                    .addressHasActive(Boolean.valueOf(faker.address().streetAddress(false)))
+                                    .build(),
+                            Address.builder()
+                                    .country(faker.address().country())
+                                    .city(faker.address().city())
+                                    .street(faker.address().streetAddress())
+                                    .addressHasActive(Boolean.valueOf(faker.address().streetAddress(true)))
+                                    .build()));
 
             Employee employee = Employee.builder()
                     .name(name)
@@ -55,7 +71,6 @@ public class LoaderServiceBean implements LoaderService {
 
             employees.add(employee);
         }
-
         return employees;
     }
 }
