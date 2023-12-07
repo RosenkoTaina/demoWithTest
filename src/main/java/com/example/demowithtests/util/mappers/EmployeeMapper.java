@@ -1,10 +1,12 @@
 package com.example.demowithtests.util.mappers;
 
 import com.example.demowithtests.domain.Employee;
+import com.example.demowithtests.dto.DeleteDTO;
 import com.example.demowithtests.dto.EmployeeDto;
 import com.example.demowithtests.dto.EmployeeReadDto;
 import org.mapstruct.Mapper;
 
+import java.util.Date;
 import java.util.List;
 
 @Mapper(componentModel = "spring")

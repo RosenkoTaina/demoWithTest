@@ -29,18 +29,18 @@ public class EmployeeServiceBean implements EmployeeService {
     private final EmployeeServiceEMBean employeeServiceEMBean;
     private final EmailSenderService emailSenderService;
 
+
     @Override
     @ActivateCustomAnnotations({Name.class, ToLowerCase.class})
     // @Transactional(propagation = Propagation.MANDATORY)
     public Employee create(Employee employee) {
         return employeeRepository.save(employee);
-        //return employeeRepository.saveAndFlush(employee);
     }
 
-    /**
-     * @param employee
-     * @return
-     */
+//    /**
+//     * @param employee
+//     * @return
+//     */
     @Override
     public void createAndSave(Employee employee) {
         employeeRepository.saveEmployee(employee.getName(), employee.getEmail(), employee.getCountry(), String.valueOf(employee.getGender()));
@@ -84,12 +84,10 @@ public class EmployeeServiceBean implements EmployeeService {
 
     @Override
     public void removeById(Integer id) {
-        //repository.deleteById(id);
+
         var employee = employeeRepository.findById(id)
-                // .orElseThrow(() -> new EntityNotFoundException("Employee not found with id = " + id));
                 .orElseThrow(ResourceWasDeletedException::new);
         employee.set_deleted(true);
-        // employeeRepository.delete(employee);
         employeeRepository.save(employee);
     }
 
