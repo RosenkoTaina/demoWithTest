@@ -1,6 +1,8 @@
 package com.example.demowithtests.service;
 
+import com.example.demowithtests.domain.Address;
 import com.example.demowithtests.domain.Employee;
+import com.example.demowithtests.dto.AddressDto;
 import com.example.demowithtests.dto.EmployeeDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -64,5 +66,9 @@ public interface EmployeeService {
     void updateEmployeeByName(String name, Integer id);
 
     Page<Employee> checkDuplicateEmails(String email, Pageable pageable);
+
+    void updateOrCreateAddress(AddressDto addressDto);
+
+    void setAddressNotActive(Long id);
 
 }

@@ -1,6 +1,8 @@
 package com.example.demowithtests.service;
 
+import com.example.demowithtests.domain.Address;
 import com.example.demowithtests.domain.Employee;
+import com.example.demowithtests.dto.AddressDto;
 import com.example.demowithtests.repository.EmployeeRepository;
 import com.example.demowithtests.service.emailSevice.EmailSenderService;
 import com.example.demowithtests.util.annotations.entity.ActivateCustomAnnotations;
@@ -37,7 +39,7 @@ public class EmployeeServiceBean implements EmployeeService {
         return employeeRepository.save(employee);
     }
 
-//    /**
+    //    /**
 //     * @param employee
 //     * @return
 //     */
@@ -258,4 +260,24 @@ public class EmployeeServiceBean implements EmployeeService {
     public Page<Employee> checkDuplicateEmails(String email, Pageable pageable) {
         return employeeRepository.findEmployeesByEmail(email, pageable);
     }
+
+
+    public void updateOrCreateAddress(AddressDto addressDto) {
+        Optional<Address> optionalAddress = employeeRepository.findAddressById(addressDto.id);
+        if (optionalAddress.isPresent()) {
+            employeeRepository.updateAddress(addressDto.id, addressDto.addressHasActive, addressDto.city, addressDto.country, addressDto.street);
+        } else {
+            employeeRepository.saveAddress(addressDto.addressHasActive, addressDto.employeeId, addressDto.city, addressDto.country, addressDto.street);
+        }
+    }
+
+
+    public void setAddressNotActive(Long id) {
+        Integer countRows = employeeRepository.setAddressNotActive(id);
+        if (countRows == 0) {
+            throw new EntityNotFoundException("Address not found with id = " + id);
+        }
+    }
+
+
 }

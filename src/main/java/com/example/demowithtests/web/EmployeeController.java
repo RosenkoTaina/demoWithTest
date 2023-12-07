@@ -1,6 +1,8 @@
 package com.example.demowithtests.web;
 
+import com.example.demowithtests.domain.Address;
 import com.example.demowithtests.domain.Employee;
+import com.example.demowithtests.dto.AddressDto;
 import com.example.demowithtests.dto.DeleteDTO;
 import com.example.demowithtests.dto.EmployeeDto;
 import com.example.demowithtests.dto.EmployeeReadDto;
@@ -21,7 +23,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static com.example.demowithtests.util.Endpoints.API_BASE;
 import static com.example.demowithtests.util.Endpoints.USER_ENDPOINT;
@@ -108,6 +109,24 @@ public class EmployeeController {
         log.debug("refreshEmployee() EmployeeController - end: name = {}", dto.name);
         return dto;
     }
+
+
+    @PutMapping("/address")
+    @ResponseStatus(HttpStatus.OK)
+    public void updateOrCreateAddress(@RequestBody AddressDto addressDto) {
+        log.debug("updateAddress() EmployeeController - start: id = {}", addressDto.id);
+        employeeService.updateOrCreateAddress(addressDto);
+        log.debug("refreshEmployee() EmployeeController - end: name = {}", addressDto.id);
+    }
+
+    @PatchMapping("/address/set-not-active/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void setAddressNotActive(@PathVariable Long id) {
+        log.debug("setAddressNotActive() EmployeeController - start: id = {}", id);
+        employeeService.setAddressNotActive(id);
+        log.debug("setAddressNotActive() EmployeeController - end: name = {}", id);
+    }
+
 
     @DeleteMapping("/users/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

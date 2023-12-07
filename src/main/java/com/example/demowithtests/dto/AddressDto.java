@@ -1,5 +1,6 @@
 package com.example.demowithtests.dto;
 
+import com.example.demowithtests.domain.Employee;
 import com.example.demowithtests.util.annotations.dto.CountryRightFormed;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -25,4 +26,6 @@ public class AddressDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     @Schema(description = "Date response")
     public Date date = Date.from(Instant.now());
+
+    public Integer employeeId;
 }
