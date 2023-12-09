@@ -289,22 +289,14 @@ public class EmployeeServiceBean implements EmployeeService {
                 throw new IllegalArgumentException("Document already exist");
             }
             else {
-                Integer id = documentRepository.saveDocument(documentDto.expireDate,documentDto.number, false, UUID.randomUUID().toString());
-                employeeRepository.updateEmployeeDocument(documentDto.employeeId,id);
+              employeeServiceEMBean.saveDocument(documentDto.expireDate,documentDto.number, false, UUID.randomUUID().toString(), documentDto.employeeId);
             }
         }
     }
 
-
+    @Override
     public void handleDocument(Integer employeeId) {
-        Optional<Employee> employee = employeeRepository.findById(employeeId);
-
-        if (!employee.isPresent()) {
-            throw new EntityNotFoundException("Employee not found with id = " + employeeId);
-        } else if (employee.get().getDocument() == null) {
-            throw new EntityNotFoundException("Document not found");
-        } else documentRepository.setDocumentIsHandled(employee.get().getDocument().getId());
-
+        employeeServiceEMBean.handleDocument(employeeId);
     }
 
 

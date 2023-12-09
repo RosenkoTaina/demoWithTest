@@ -75,4 +75,7 @@ public interface EmployeeService {
     void attachDocument(DocumentDto documentDto);
 
     void handleDocument(Integer employeeId);
+
+
+
 }
