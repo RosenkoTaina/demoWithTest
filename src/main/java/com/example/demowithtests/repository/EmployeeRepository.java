@@ -114,6 +114,10 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     @Modifying(flushAutomatically = true, clearAutomatically = true)
     @Query(value = "UPDATE addresses SET address_has_active = FALSE WHERE id = :id", nativeQuery = true)
     Integer setAddressNotActive(Long id);
+    @Transactional
+    @Modifying(flushAutomatically = true, clearAutomatically = true)
+    @Query(value = "UPDATE users SET document_id = :document_id WHERE id = :id", nativeQuery = true)
+    Integer updateEmployeeDocument(Integer id, Integer document_id);
 
 
 }

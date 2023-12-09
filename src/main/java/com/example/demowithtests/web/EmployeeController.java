@@ -1,11 +1,7 @@
 package com.example.demowithtests.web;
 
-import com.example.demowithtests.domain.Address;
 import com.example.demowithtests.domain.Employee;
-import com.example.demowithtests.dto.AddressDto;
-import com.example.demowithtests.dto.DeleteDTO;
-import com.example.demowithtests.dto.EmployeeDto;
-import com.example.demowithtests.dto.EmployeeReadDto;
+import com.example.demowithtests.dto.*;
 import com.example.demowithtests.service.EmployeeService;
 import com.example.demowithtests.service.EmployeeServiceEM;
 import com.example.demowithtests.util.mappers.EmployeeMapper;
@@ -226,5 +222,22 @@ public class EmployeeController {
         var content = employeeService.checkDuplicateEmails(email, paging);
         return content;
     }
+
+    @PostMapping("/employees/attach-document")
+    @ResponseStatus(HttpStatus.OK)
+    public String attachDocument(@RequestBody DocumentDto documentDto) {
+        employeeService.attachDocument(documentDto);
+        return "document saved!";
+    }
+
+    @PatchMapping("/employees/handle-document/{employeeId}")
+    @ResponseStatus(HttpStatus.OK)
+    public void handleDocument(@PathVariable("employeeId") Integer employeeId) {
+        log.debug("handleDocument() EmployeeController - start: employeeId = {}", employeeId);
+        employeeService.handleDocument(employeeId);
+        log.debug("handleDocument() EmployeeController - end: employeeId = {}", employeeId);
+
+    }
+
 
 }

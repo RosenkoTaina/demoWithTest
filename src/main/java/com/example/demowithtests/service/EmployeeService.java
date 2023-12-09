@@ -3,6 +3,7 @@ package com.example.demowithtests.service;
 import com.example.demowithtests.domain.Address;
 import com.example.demowithtests.domain.Employee;
 import com.example.demowithtests.dto.AddressDto;
+import com.example.demowithtests.dto.DocumentDto;
 import com.example.demowithtests.dto.EmployeeDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -71,4 +72,7 @@ public interface EmployeeService {
 
     void setAddressNotActive(Long id);
 
+    void attachDocument(DocumentDto documentDto);
+
+    void handleDocument(Integer employeeId);
 }

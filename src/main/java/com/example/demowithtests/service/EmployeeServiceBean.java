@@ -3,6 +3,8 @@ package com.example.demowithtests.service;
 import com.example.demowithtests.domain.Address;
 import com.example.demowithtests.domain.Employee;
 import com.example.demowithtests.dto.AddressDto;
+import com.example.demowithtests.dto.DocumentDto;
+import com.example.demowithtests.repository.DocumentRepository;
 import com.example.demowithtests.repository.EmployeeRepository;
 import com.example.demowithtests.service.emailSevice.EmailSenderService;
 import com.example.demowithtests.util.annotations.entity.ActivateCustomAnnotations;
@@ -30,7 +32,7 @@ public class EmployeeServiceBean implements EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final EmployeeServiceEMBean employeeServiceEMBean;
     private final EmailSenderService emailSenderService;
-
+    private final DocumentRepository documentRepository;
 
     @Override
     @ActivateCustomAnnotations({Name.class, ToLowerCase.class})
@@ -277,6 +279,32 @@ public class EmployeeServiceBean implements EmployeeService {
         if (countRows == 0) {
             throw new EntityNotFoundException("Address not found with id = " + id);
         }
+    }
+
+    @Override
+    public void attachDocument(DocumentDto documentDto) {
+        Optional<Employee> employee = employeeRepository.findById(documentDto.employeeId);
+        if (employee.isPresent()) {
+            if (employee.get().getDocument()!=null){
+                throw new IllegalArgumentException("Document already exist");
+            }
+            else {
+                Integer id = documentRepository.saveDocument(documentDto.expireDate,documentDto.number, false, UUID.randomUUID().toString());
+                employeeRepository.updateEmployeeDocument(documentDto.employeeId,id);
+            }
+        }
+    }
+
+
+    public void handleDocument(Integer employeeId) {
+        Optional<Employee> employee = employeeRepository.findById(employeeId);
+
+        if (!employee.isPresent()) {
+            throw new EntityNotFoundException("Employee not found with id = " + employeeId);
+        } else if (employee.get().getDocument() == null) {
+            throw new EntityNotFoundException("Document not found");
+        } else documentRepository.setDocumentIsHandled(employee.get().getDocument().getId());
+
     }
 
 
