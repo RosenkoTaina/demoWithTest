@@ -225,7 +225,7 @@ public class EmployeeController {
 
     @PostMapping("/employees/attach-document")
     @ResponseStatus(HttpStatus.OK)
-    public String attachDocument(@RequestBody DocumentDto documentDto) {
+    public String attachDocument(@RequestBody @Valid DocumentDto documentDto) {
         employeeService.attachDocument(documentDto);
         return "document saved!";
     }
