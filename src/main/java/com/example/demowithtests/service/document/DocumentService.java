@@ -1,6 +1,9 @@
 package com.example.demowithtests.service.document;
 
 import com.example.demowithtests.domain.Document;
+import com.example.demowithtests.dto.DocumentDto;
+
+import java.time.LocalDateTime;
 
 public interface DocumentService {
 
@@ -11,4 +14,8 @@ public interface DocumentService {
     Document handlePassport(Integer id);
 
     Document addImage(Integer passportId, Integer imageId);
+
+    void attachDocument(DocumentDto documentDto);
+
+
 }

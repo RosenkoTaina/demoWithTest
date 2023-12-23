@@ -72,9 +72,7 @@ public interface EmployeeService {
 
     void setAddressNotActive(Long id);
 
-    void attachDocument(DocumentDto documentDto);
 
-    void handleDocument(Integer employeeId);
 
 
 

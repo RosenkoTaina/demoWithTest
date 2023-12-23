@@ -2,9 +2,13 @@ package com.example.demowithtests.service;
 
 import com.example.demowithtests.domain.Document;
 import com.example.demowithtests.domain.Employee;
+import com.example.demowithtests.repository.DocumentRepository;
+import com.example.demowithtests.service.document.DocumentService;
+import com.example.demowithtests.service.document.DocumentServiceBean;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +19,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Slf4j
+@AllArgsConstructor
 @Service
 public class EmployeeServiceEMBean implements EmployeeServiceEM {
 
@@ -73,35 +78,7 @@ public class EmployeeServiceEMBean implements EmployeeServiceEM {
         return entityManager.createNativeQuery("SELECT * FROM users WHERE is_deleted = false", Employee.class).getResultList();
     }
 
-    @Override
-    @Transactional
-    public void saveDocument(LocalDateTime expireDate, String number, Boolean isHandled, String uuid, Integer employeeId) {
-        Document document = new Document();
-        document.setExpireDate(expireDate);
-        document.setNumber(number);
-        document.setIsHandled(isHandled);
-        document.setUuid(uuid);
-        entityManager.persist(document);
 
-        Employee employee = Optional.ofNullable(entityManager.find(Employee.class, employeeId))
-                .orElseThrow(() -> new RuntimeException("id = " + employeeId));
-        employee.setDocument(document);
-        entityManager.persist(employee);
-
-    }
-
-    @Override
-    @Transactional
-    public void handleDocument(Integer employeeId) {
-      Employee employee = Optional.ofNullable(entityManager.find(Employee.class, employeeId))
-                .orElseThrow(() -> new RuntimeException("id = " + employeeId));
-      Document document = Optional.ofNullable(employee.getDocument())
-                .orElseThrow(() -> new RuntimeException("Document not found"));;
-     document.setIsHandled(Boolean.TRUE);
-     employee.setDocument(document);
-     entityManager.persist(employee);
-
-    }
 
 
 }

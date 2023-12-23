@@ -1,7 +1,6 @@
 package com.example.demowithtests.service;
 
 import com.example.demowithtests.domain.Employee;
-import jakarta.transaction.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,7 +18,5 @@ public interface EmployeeServiceEM {
 
     List<Employee> getAllEM();
 
-    void saveDocument(LocalDateTime expireDate, String number, Boolean isHandled, String uuid, Integer employeeId);
 
-    void handleDocument(Integer employeeId);
 }

@@ -4,6 +4,8 @@ import com.example.demowithtests.domain.Employee;
 import com.example.demowithtests.dto.*;
 import com.example.demowithtests.service.EmployeeService;
 import com.example.demowithtests.service.EmployeeServiceEM;
+import com.example.demowithtests.service.document.DocumentService;
+import com.example.demowithtests.service.document.DocumentServiceEM;
 import com.example.demowithtests.util.mappers.EmployeeMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -33,6 +35,8 @@ public class EmployeeController {
     private final EmployeeService employeeService;
     private final EmployeeServiceEM employeeServiceEM;
     private final EmployeeMapper employeeMapper;
+    private final DocumentService documentService;
+    private final DocumentServiceEM documentServiceEM;
 
     @PostMapping(USER_ENDPOINT)
     @ResponseStatus(HttpStatus.CREATED)
@@ -226,7 +230,7 @@ public class EmployeeController {
     @PostMapping("/employees/attach-document")
     @ResponseStatus(HttpStatus.OK)
     public String attachDocument(@RequestBody DocumentDto documentDto) {
-        employeeService.attachDocument(documentDto);
+        documentService.attachDocument(documentDto);
         return "document saved!";
     }
 
@@ -234,10 +238,17 @@ public class EmployeeController {
     @ResponseStatus(HttpStatus.OK)
     public void handleDocument(@PathVariable("employeeId") Integer employeeId) {
         log.debug("handleDocument() EmployeeController - start: employeeId = {}", employeeId);
-        employeeService.handleDocument(employeeId);
+        documentServiceEM.handleDocument(employeeId);
         log.debug("handleDocument() EmployeeController - end: employeeId = {}", employeeId);
 
     }
 
+    @DeleteMapping("/employees/delete-document/{employeeId}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteDocument(@PathVariable("employeeId") Integer employeeId) {
+        log.debug("deleteDocument() EmployeeController - start: employeeId = {}", employeeId);
+        documentServiceEM.removeById(employeeId);
+        log.debug("deleteDocument() EmployeeController - end: employeeId = {}", employeeId);
+    }
 
 }
