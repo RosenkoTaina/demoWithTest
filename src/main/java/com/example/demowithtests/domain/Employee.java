@@ -8,6 +8,7 @@ import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import lombok.*;
 import org.hibernate.annotations.*;
+import org.hibernate.envers.Audited;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -21,6 +22,7 @@ import java.util.Set;
 @Builder
 @SQLDelete(sql = "UPDATE users SET is_deleted = true WHERE id=?")
 @Where(clause = "is_deleted=false")
+@Audited
 //@FilterDef(name = "deletedProductFilter", parameters = @ParamDef(name = "is_deleted", type = "boolean"))
 //@Filter(name = "deletedProductFilter", condition = "is_deleted = :is_deleted")
 

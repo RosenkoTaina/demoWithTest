@@ -2,6 +2,7 @@ package com.example.demowithtests.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.envers.Audited;
 
 @Getter
 @Setter
@@ -11,6 +12,7 @@ import lombok.*;
 @Entity
 @Table(name = "addresses")
 @Builder
+@Audited
 public class Address {
 
     @Id

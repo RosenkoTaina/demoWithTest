@@ -2,6 +2,7 @@ package com.example.demowithtests.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.envers.Audited;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -12,6 +13,7 @@ import java.util.UUID;
 @Builder
 @Entity
 @Table(name = "documents")
+@Audited
 public final class Document {
 
     @Id
