@@ -77,7 +77,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 
     @Transactional
     @Modifying(flushAutomatically = true, clearAutomatically = true)
-    @Query(value = "INSERT INTO users(name, email, country, gender) VALUES (:name, :email, :country, :gender)", nativeQuery = true)
+    @Query(value = "INSERT INTO users(name, email, country, gender, is_deleted) VALUES (:name, :email, :country, :gender, false)", nativeQuery = true)
     //Integer saveEmployee(String name, String email, String country, String gender);
     void saveEmployee(String name, String email, String country, String gender);
 

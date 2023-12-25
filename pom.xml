@@ -194,10 +194,12 @@
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>8.4.1</version>
             </plugin>-->
+
             <plugin>
                 <groupId>io.fabric8</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
                 <version>0.42.1</version>
+
 <!--                <executions>-->
 <!--                    <execution>-->
 <!--                        <id>docker-build</id>-->
@@ -217,7 +219,9 @@
 <!--                        </configuration>-->
 <!--                    </execution>-->
 <!--                </executions>-->
+
             </plugin>
+
         </plugins>
     </build>
 

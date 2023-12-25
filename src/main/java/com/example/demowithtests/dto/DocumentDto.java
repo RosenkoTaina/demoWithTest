@@ -18,6 +18,6 @@ public class DocumentDto {
     public Boolean isHandled;
 
     public Integer employeeId;
-
-
 }
+
+

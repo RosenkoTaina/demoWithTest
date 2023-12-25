@@ -6,6 +6,7 @@ import com.example.demowithtests.dto.AddressDto;
 import com.example.demowithtests.dto.DocumentDto;
 import com.example.demowithtests.repository.DocumentRepository;
 import com.example.demowithtests.repository.EmployeeRepository;
+import com.example.demowithtests.service.document.DocumentService;
 import com.example.demowithtests.service.emailSevice.EmailSenderService;
 import com.example.demowithtests.util.annotations.entity.ActivateCustomAnnotations;
 import com.example.demowithtests.util.annotations.entity.Name;
@@ -33,6 +34,7 @@ public class EmployeeServiceBean implements EmployeeService {
     private final EmployeeServiceEMBean employeeServiceEMBean;
     private final EmailSenderService emailSenderService;
     private final DocumentRepository documentRepository;
+    private final DocumentService documentService;
 
     @Override
     @ActivateCustomAnnotations({Name.class, ToLowerCase.class})
@@ -281,23 +283,6 @@ public class EmployeeServiceBean implements EmployeeService {
         }
     }
 
-    @Override
-    public void attachDocument(DocumentDto documentDto) {
-        Optional<Employee> employee = employeeRepository.findById(documentDto.employeeId);
-        if (employee.isPresent()) {
-            if (employee.get().getDocument()!=null){
-                throw new IllegalArgumentException("Document already exist");
-            }
-            else {
-              employeeServiceEMBean.saveDocument(documentDto.expireDate,documentDto.number, false, UUID.randomUUID().toString(), documentDto.employeeId);
-            }
-        }
-    }
-
-    @Override
-    public void handleDocument(Integer employeeId) {
-        employeeServiceEMBean.handleDocument(employeeId);
-    }
 
 
 }
